@@ -1,5 +1,5 @@
 import requests
-from flask import Flask
+from flask import Flask, jsonify, json
 import psycopg2
 
 con = psycopg2.connect(
@@ -12,8 +12,9 @@ con = psycopg2.connect(
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/owner', methods=['GET'])
 def hello_world():
     cur = con.cursor()
-    cur.close()
-    return 'Hello'
+    cur.execute("select * from owners")
+    rows = cur.fetchall()
+    return jsonify(rows)
