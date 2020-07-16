@@ -6,13 +6,14 @@ import psycopg2
 con = psycopg2.connect(
     host="Localhost",
     database="pet_hotel",
-    user="andrewlawler",
+    user="postgres",
     password="postgres",
     port=5432
 )
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/owner', methods=['GET'])
 def hello_world():
@@ -21,13 +22,27 @@ def hello_world():
     rows = cur.fetchall()
     return jsonify(rows)
 
+
 @app.route('/owner', methods=['POST'])
 def post():
-    cur=con.cursor()
+    cur = con.cursor()
     owner = request.get_json()
     first_name = owner["firstName"]
     last_name = owner["lastName"]
-    cur.execute("insert into owners (first_name, last_name) values (%s, %s);", (first_name, last_name))
+    cur.execute("insert into owners (first_name, last_name) values (%s, %s);",
+                (first_name, last_name))
     con.commit()
     cur.close()
     return 'Hello'
+
+
+@app.route('/owner', methods=['DELETE'])
+def delete():
+    cur = con.cursor()
+    owner = request.get_json()
+    owner_id = owner["key"]
+    print(owner_id)
+    cur.execute("delete from owners where id=%s;", (owner_id,))
+    con.commit()
+    cur.close()
+    return 'Aloha'
