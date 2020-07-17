@@ -6,7 +6,7 @@ import psycopg2
 con = psycopg2.connect(
     host="Localhost",
     database="pet_hotel",
-    user="postgres",
+    user="andrewlawler",
     password="postgres",
     port=5432
 )
@@ -64,8 +64,8 @@ def post_pet():
     pet_color = pet["color"]
     pet_breed = pet["breed"]
     owner_id = pet["owner"]
-    cur.execute("insert into pets (name, breed, color, owners_id) values (%s, %s, %s, %s);",
-                (pet_name, pet_breed, pet_color, owner_id))
+    cur.execute("insert into pets (name, breed, color, owners_id) values (%s, %s, %s, %s);", (pet_name, pet_breed, pet_color, owner_id))
     print(pet_name, pet_color, pet_breed, owner_id)
+    con.commit()
     cur.close()
     return 'I like candy'
