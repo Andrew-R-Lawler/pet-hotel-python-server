@@ -42,6 +42,7 @@ def delete():
     owner = request.get_json()
     owner_id = owner["key"]
     print(owner_id)
+    cur.execute("delete from pets where owners_id=%s;", (owner_id,))
     cur.execute("delete from owners where id=%s;", (owner_id,))
     con.commit()
     cur.close()
