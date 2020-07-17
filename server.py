@@ -54,3 +54,18 @@ def get_pets():
     cur.execute("select * from pets")
     rows = cur.fetchall()
     return jsonify(rows)
+
+
+@app.route('/pet', methods=["POST"])
+def post_pet():
+    cur = con.cursor()
+    pet = request.get_json()
+    pet_name = pet["name"]
+    pet_color = pet["color"]
+    pet_breed = pet["breed"]
+    owner_id = pet["owner"]
+    cur.execute("insert into pets (name, breed, color, owners_id) values (%s, %s, %s, %s);",
+                (pet_name, pet_breed, pet_color, owner_id))
+    print(pet_name, pet_color, pet_breed, owner_id)
+    cur.close()
+    return 'I like candy'
