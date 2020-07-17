@@ -42,6 +42,7 @@ def delete():
     owner = request.get_json()
     owner_id = owner["key"]
     print(owner_id)
+    cur.execute("delete from pets where owners_id=%s;", (owner_id,))
     cur.execute("delete from owners where id=%s;", (owner_id,))
     con.commit()
     cur.close()
@@ -69,3 +70,17 @@ def post_pet():
     con.commit()
     cur.close()
     return 'I like candy'
+
+
+@app.route('/pet', methods=["PUT"])
+def update_pet():
+    cur = con.cursor()
+    print(request.get_json)
+    pet = request.get_json()
+    print(pet)
+    pet_id = pet["key"]
+
+    cur.execute(
+        "update pets set is_checked_in = NOT is_checked_in where id=%s;", (pet_id,))
+
+    return 'hello'
