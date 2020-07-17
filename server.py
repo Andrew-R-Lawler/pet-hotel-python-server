@@ -46,3 +46,11 @@ def delete():
     con.commit()
     cur.close()
     return 'Aloha'
+
+
+@app.route('/pet', methods=["GET"])
+def get_pets():
+    cur = con.cursor()
+    cur.execute("select * from pets")
+    rows = cur.fetchall()
+    return jsonify(rows)
