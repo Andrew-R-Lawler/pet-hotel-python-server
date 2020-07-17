@@ -67,5 +67,20 @@ def post_pet():
     cur.execute("insert into pets (name, breed, color, owners_id) values (%s, %s, %s, %s);",
                 (pet_name, pet_breed, pet_color, owner_id))
     print(pet_name, pet_color, pet_breed, owner_id)
+    con.commit()
     cur.close()
     return 'I like candy'
+
+
+@app.route('/pet', methods=["PUT"])
+def update_pet():
+    cur = con.cursor()
+    print(request.get_json)
+    pet = request.get_json()
+    print(pet)
+    pet_id = pet["key"]
+
+    cur.execute(
+        "update pets set is_checked_in = NOT is_checked_in where id=%s;", (pet_id,))
+
+    return 'hello'
